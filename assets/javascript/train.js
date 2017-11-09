@@ -73,21 +73,33 @@ database.ref().on("child_added", function(childSnapShot, prevChildKey) {
   console.log("Frequency: ", trainRate);
 
   //Calculating Minutes Away
+
+  // Convert User Input to one year ago today so all numbers are always positive
   var firstTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
   console.log("Time Converted: " + firstTimeConverted);
 
+  // Calculate the Difference in Time via milliseconds, then show as minutes
   var diffTime = moment.duration(moment().diff(moment(trainTime, "HH:mm")), "milliseconds").asMinutes();
   console.log("Difference in Time" + diffTime);
 
+  // Calculate the time remaining until next train arrives
+  // This is accomplished by using the difference in time between the current time and the initial train launch time from previous step
+  // Use Math Floor to get round minutes and find the remainder when dividing time difference and frequency.
+  // Finally, subtract the remainder from the trainRate to see how much time until next Train is due
   var timeRemaining = trainRate - (Math.floor(diffTime) % trainRate);
   console.log(timeRemaining);
 
+  // Display Time of Next Train's Arrival
+  // First Check to ensure there's a time difference, if train is due, display time of next train
+  // If train hasn't made any trips, then display departure time from database as HH:mm
   var nextTrain = diffTime > 0 ? moment().add(timeRemaining, 'minutes' ) : moment(trainTime, "HH:mm") ;
   console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
   
+  // Display minutes until next train arrives, rounding to the nearest minute
   var minTilTrain = Math.ceil(moment.duration(moment(nextTrain).diff(moment()), 'milliseconds').asMinutes());
   console.log("MINUTES TILL TRAIN: " + minTilTrain);
 
+  //Update format of nexTrain variable to to display in HTML as HH:mm instead of milliseconds
   nextTrain = moment(nextTrain).format("HH:mm");
 
   //Write Data From Database to Table
