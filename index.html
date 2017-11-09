@@ -11,7 +11,11 @@
     <!-- Jquery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Firebase Connection -->
-    <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+	<!-- moment js -->
+	<script src="moment.js"></script>
+	<!-- Moment.js -->
+	<script src="https://cdn.jsdelivr.net/npm/moment@2.19.1/moment.min.js"></script>
 </head>
 <body>
     <!-- header -->
@@ -26,7 +30,7 @@
 	<div class="container">
 		<div class="panel panel-default">
 			<div class="panel-heading">Current Train Schedule</div>
-				<table class="table">
+				<table class="table" id="traintimes">
 			  		<thead>
 				    	<tr>
 				    		<th>Train Name</th>
@@ -37,9 +41,6 @@
 				    	</tr>
 			    	</thead>
 			    	<tbody id="table-body">
-                        <tr id="traindata">
-
-                        </tr>
 			    	</tbody>
 		  		</table>
 			</div>
@@ -75,5 +76,6 @@
 	  		</div>
 	  	</div>
 	</div>
+	<script src="assets/javascript/train.js"></script>
 </body>
 </html>
