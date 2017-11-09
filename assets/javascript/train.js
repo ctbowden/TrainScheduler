@@ -22,7 +22,7 @@ var database = firebase.database();
 var name = "";
 var dest = "";
 var time = "";
-var rate = "";
+var rate = 0;
 
 // Submit On Click
 
@@ -64,32 +64,34 @@ database.ref().on("child_added", function(childSnapShot, prevChildKey) {
   var trainDest = childSnapShot.val().dest;
   var trainTime = childSnapShot.val().time;
   var trainRate = childSnapShot.val().rate;
+  trainRate = parseInt(trainRate);
 
+  // Log the above variables
+  console.log("Name: ", trainName);
+  console.log("Destination: ", trainDest);
+  console.log("Departure: ", trainTime);
+  console.log("Frequency: ", trainRate);
 
-  // Time Conversions to Minutes
-  var convertedTrainTime = moment(trainTime, "HH:mm").minutes();
-  console.log("Converted Train Time: " + convertedTrainTime);
+  //Calculating Minutes Away
+  var firstTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
+  console.log("Time Converted: " + firstTimeConverted);
 
-  // System Time
-  var now = moment().minutes();
-  console.log("Now:" + now);
+  var diffTime = moment.duration(moment().diff(moment(trainTime, "HH:mm")), "milliseconds").asMinutes();
+  console.log("Difference in Time" + diffTime);
 
-  // Next Arrival
-  var then = trainTime;
-  console.log("Then:" +then);
+  var timeRemaining = trainRate - (Math.floor(diffTime) % trainRate);
+  console.log(timeRemaining);
 
-  var difference = moment().diff(moment(then, "mm"), "minutes");
-  console.log("Difference"  + difference);
-  var trainArrival = "";
-  // console.log(trainTimeMin);
-  // console.log(trainArrival);
+  var nextTrain = diffTime > 0 ? moment().add(timeRemaining, 'minutes' ) : moment(trainTime, "HH:mm") ;
+  console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+  
+  var minTilTrain = Math.ceil(moment.duration(moment(nextTrain).diff(moment()), 'milliseconds').asMinutes());
+  console.log("MINUTES TILL TRAIN: " + minTilTrain);
 
-
-  // Minutes Away
-  var trainMinAway = "";
+  nextTrain = moment(nextTrain).format("HH:mm");
 
   //Write Data From Database to Table
   var newTrainTableRow = "";
-  $("#traintimes > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDest + "</td><td>" + trainRate + "</td><td>" + trainArrival + "</td><td>" + trainMinAway + "</td></tr>");
+  $("#traintimes > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDest + "</td><td>" + trainRate + "</td><td>" + nextTrain + "</td><td>" + minTilTrain + "</td></tr>");
   
 });
