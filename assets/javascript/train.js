@@ -35,39 +35,58 @@ $("#submit").on("click", function(event) {
   time = $("#input-time").val().trim();
   rate = $("#input-rate").val().trim();
 
-  //Submitting Data to Database
-  database.ref().push({
+  //Creating an object to be submitted to the Firebase Database
+  var newTrain = {
     name: name,
     dest: dest,
     time: time,
     rate: rate,
     dateAdded: firebase.database.ServerValue.TIMESTAMP
-  });
+  };
+
+  // Pushes the newTrain Data to Firebase
+  database.ref().push(newTrain);
+
+  //Clear the Form
+  $("#input-name").val("");
+  $("#input-dest").val("");
+  $("#input-time").val("");
+  $("#input-rate").val("");
 
 });
 
 // Write Table Data to HTML when page loads or when Firebase is updated
-database.ref().on("child_added", function(childSnapshot, prevChildKey){
+database.ref().on("child_added", function(childSnapShot, prevChildKey) {
   
   console.log(childSnapShot.val());
   //Retrieve Values from Database set to variables
-  var trainName = childSnapshot.val().name;
-  var trainDest = childSnapshot.val().dest;
-  var trainTime = childSnapshot.val().time;
-  var trainRate = childSnapshot.val().rate;
+  var trainName = childSnapShot.val().name;
+  var trainDest = childSnapShot.val().dest;
+  var trainTime = childSnapShot.val().time;
+  var trainRate = childSnapShot.val().rate;
 
-  // Convert Starting Time to UTC Time in minutes
-  var trainTimeUTC = moment.utc(trainTime, "minutes");
 
-  // Variable to Hold Current Time and set it equal to minutes
-  var currentTime = moment.utc();
+  // Time Conversions to Minutes
+  var convertedTrainTime = moment(trainTime, "HH:mm").minutes();
+  console.log("Converted Train Time: " + convertedTrainTime);
+
+  // System Time
+  var now = moment().minutes();
+  console.log("Now:" + now);
 
   // Next Arrival
+  var then = trainTime;
+  console.log("Then:" +then);
+
+  var difference = moment().diff(moment(then, "mm"), "minutes");
+  console.log("Difference"  + difference);
   var trainArrival = "";
-  trainArrival = trainTimeUTC.diff(currentTime, "minutes");
+  // console.log(trainTimeMin);
+  // console.log(trainArrival);
+
 
   // Minutes Away
-
+  var trainMinAway = "";
 
   //Write Data From Database to Table
   var newTrainTableRow = "";
