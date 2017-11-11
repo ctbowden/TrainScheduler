@@ -8,12 +8,11 @@
     <!-- Includes for Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
     <!-- Jquery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Firebase Connection -->
 	<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
-	<!-- moment js -->
-	<!-- <script src="moment.js"></script> -->
 	<!-- Moment.js -->
 	<script src="https://cdn.jsdelivr.net/npm/moment@2.19.1/moment.min.js"></script>
 </head>
@@ -21,15 +20,16 @@
     <!-- header -->
 	<div class="container">
 		<div class="page-header text-center">
-			<h1>Anytime is Train Time</h1>
-			<h3>Choo Choo. Chee Chee.</h3>
+			<img src="assets/images/corseal.png">
+			<h1>Raleigh Rail Line</h1>
+			<h3><em>Stop and Stay a While!</em></h3>
 		</div>
 	</div>
 	
 	<!-- Current Train Schedule Div -->
 	<div class="container">
 		<div class="panel panel-default">
-			<div class="panel-heading">Current Train Schedule</div>
+			<div class="panel-heading" id="cts">Current Train Schedule</div>
 				<table class="table" id="traintimes">
 			  		<thead>
 				    	<tr>
@@ -50,7 +50,7 @@
 	<!-- Form to Add Train Data -->
 	<div class="container">
 		<div class="panel panel-default">
-			<div class="panel-heading">
+			<div class="panel-heading cts">
 				<h3 class="panel-title">Add Train</h3>
 			</div>
 			<div class="panel-body">	
